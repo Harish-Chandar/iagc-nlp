@@ -40,8 +40,9 @@
             }
 
         }
-        console.log("Months >> " + finaloutput.month)
-        console.log("Days >> " + finaloutput.day)
+        
+        console.log("Months << " + finaloutput.month);
+        console.log("Days << " + finaloutput.day);
     }
 
 </script>
