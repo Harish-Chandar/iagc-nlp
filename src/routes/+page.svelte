@@ -12,6 +12,7 @@
         date = [];
         day = [];
         year = [];
+        time = [];
         constructor(thecurrentyear) {
             this.year = [thecurrentyear, thecurrentyear];
         }
@@ -26,7 +27,8 @@
         inp.replaceAll(",", "");
         let text = inp.toLowerCase().split(" ");
         console.log("Input >> " + text);
-        for (let each of text){
+        for (let i = 0; i < text.length; i++){
+            let each = text[i];
             // find months, days
             if (months.indexOf(each) >= 0){
                 finaloutput.month = [...finaloutput.month, months[months.indexOf(each)]];
@@ -37,12 +39,48 @@
                 finaloutput.day = [...finaloutput.day, days[days.indexOf(each) % 7]];
             } else if (daysabbr.indexOf(each) >= 0) {
                 finaloutput.day = [...finaloutput.day, daysabbr[daysabbr.indexOf(each)]];
-            }
 
+            } 
+            else if (each === "am") {
+                let thistime = text[i-1];
+                finaloutput.time = [...finaloutput.time, determineTime(true, thistime)];
+            } else if (each === "pm") {
+                let thistime = text[i-1];
+                finaloutput.time = [...finaloutput.time, determineTime(false, thistime)];
+            } else if (each.includes("am")) {
+                finaloutput.time = [...finaloutput.time, determineTime(true, each)];
+            }else if (each.includes("pm")) {
+                finaloutput.time = [...finaloutput.time, determineTime(false, each)];
+            }
         }
+
         
+        // debug outputs 
         console.log("Months << " + finaloutput.month);
         console.log("Days << " + finaloutput.day);
+        console.log("Times << " + finaloutput.time);
+    }
+
+    function determineTime(isam, thistime){
+        // thistime:string
+        // am:boolean
+        let timeInMinutes;
+    
+        if (isam){
+            timeInMinutes = 0;
+        } else {
+            timeInMinutes = 12*60;
+        }
+    
+        if (thistime.indexOf(":") > 0){
+            let x = thistime.split(":");
+            x[0] = parseInt(x[0]);
+            x[1] = parseInt(x[1]);
+            timeInMinutes += x[0]*60 + x[1];
+        } else {
+            timeInMinutes += parseInt(thistime)*60;
+        }
+        return timeInMinutes;
     }
 
 </script>
@@ -58,6 +96,7 @@
 <style>
     main {
         width: 100%;
+        font-family: Calibri, sans-serif;
     }
 
     #input {
