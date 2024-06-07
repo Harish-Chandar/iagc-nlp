@@ -1,4 +1,5 @@
 <script>
+    // @ts-nocheck
     let inp = "";
     
     const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
@@ -12,8 +13,8 @@
         date = [];
         day = [];
         year = [];
-        constructor(thecurrentyear) {
-            this.year = [thecurrentyear, thecurrentyear];
+        time = [];
+        constructor() {
         }
     }
 
@@ -21,12 +22,13 @@
 
     function handleclick(){
 
-        finaloutput = new FinalDate(new Date().getFullYear().toString());
+        finaloutput = new FinalDate();
 
         inp.replaceAll(",", "");
         let text = inp.toLowerCase().split(" ");
         console.log("Input >> " + text);
-        for (let each of text){
+        for (let i = 0; i < text.length; i++){
+            let each = text[i];
             // find months, days
             if (months.indexOf(each) >= 0){
                 finaloutput.month = [...finaloutput.month, months[months.indexOf(each)]];
@@ -37,12 +39,61 @@
                 finaloutput.day = [...finaloutput.day, days[days.indexOf(each) % 7]];
             } else if (daysabbr.indexOf(each) >= 0) {
                 finaloutput.day = [...finaloutput.day, daysabbr[daysabbr.indexOf(each)]];
-            }
 
+            } 
+            else if (each === "am") {
+                let thistime = text[i-1];
+                finaloutput.time = [...finaloutput.time, determineTime(true, thistime)];
+            } else if (each === "pm") {
+                let thistime = text[i-1];
+                finaloutput.time = [...finaloutput.time, determineTime(false, thistime)];
+            } else if (each.includes("am")) {
+                finaloutput.time = [...finaloutput.time, determineTime(true, each)];
+            }else if (each.includes("pm")) {
+                finaloutput.time = [...finaloutput.time, determineTime(false, each)];
+            }
+            else if (each.length === 4 && parseInt(each) >= new Date().getFullYear()){
+                finaloutput.year = [...finaloutput.year, each];
+            }
+        }
+
+        if (finaloutput.year.length < 2){
+            finaloutput.year = [...finaloutput.year, new Date().getFullYear()];
+        }
+        if (parseInt(finaloutput.year[1]) < parseInt(finaloutput.year[0])) {
+            finaloutput.year = [finaloutput.year[1], finaloutput.year[0]];
+        }
+        if (parseInt(finaloutput.time[1]) < parseInt(finaloutput.time[0])) {
+            finaloutput.year = [finaloutput.time[1], finaloutput.time[0]];
         }
         
+        // debug outputs 
+        console.log("Years << " + finaloutput.year); // not complete
         console.log("Months << " + finaloutput.month);
         console.log("Days << " + finaloutput.day);
+        console.log("Times << " + finaloutput.time);
+    }
+
+    function determineTime(isam, thistime){
+        // thistime:string
+        // am:boolean
+        let timeInMinutes;
+    
+        if (isam){
+            timeInMinutes = 0;
+        } else {
+            timeInMinutes = 12*60;
+        }
+    
+        if (thistime.indexOf(":") > 0){
+            let x = thistime.split(":");
+            x[0] = parseInt(x[0]);
+            x[1] = parseInt(x[1]);
+            timeInMinutes += x[0]*60 + x[1];
+        } else {
+            timeInMinutes += parseInt(thistime)*60;
+        }
+        return timeInMinutes;
     }
 
 </script>
@@ -58,6 +109,7 @@
 <style>
     main {
         width: 100%;
+        font-family: Calibri, sans-serif;
     }
 
     #input {
