@@ -56,6 +56,15 @@
             }
         }
 
+        if (finaloutput.year.length < 2){
+            finaloutput.year = [...finaloutput.year, new Date().getFullYear()];
+        }
+        if (parseInt(finaloutput.year[1]) < parseInt(finaloutput.year[0])) {
+            finaloutput.year = [finaloutput.year[1], finaloutput.year[0]];
+        }
+        if (parseInt(finaloutput.time[1]) < parseInt(finaloutput.time[0])) {
+            finaloutput.year = [finaloutput.time[1], finaloutput.time[0]];
+        }
         
         // debug outputs 
         console.log("Years << " + finaloutput.year); // not complete
