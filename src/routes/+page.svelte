@@ -13,8 +13,7 @@
         day = [];
         year = [];
         time = [];
-        constructor(thecurrentyear) {
-            this.year = [thecurrentyear, thecurrentyear];
+        constructor() {
         }
     }
 
@@ -22,7 +21,7 @@
 
     function handleclick(){
 
-        finaloutput = new FinalDate(new Date().getFullYear().toString());
+        finaloutput = new FinalDate();
 
         inp.replaceAll(",", "");
         let text = inp.toLowerCase().split(" ");
@@ -52,10 +51,14 @@
             }else if (each.includes("pm")) {
                 finaloutput.time = [...finaloutput.time, determineTime(false, each)];
             }
+            else if (each.length === 4 && parseInt(each) >= new Date().getFullYear()){
+                finaloutput.year = [...finaloutput.year, each];
+            }
         }
 
         
         // debug outputs 
+        console.log("Years << " + finaloutput.year); // not complete
         console.log("Months << " + finaloutput.month);
         console.log("Days << " + finaloutput.day);
         console.log("Times << " + finaloutput.time);
