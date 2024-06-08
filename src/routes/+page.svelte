@@ -1,5 +1,6 @@
 <script>
     // @ts-nocheck
+
     let inp = "";
 
     let outputs;
@@ -110,7 +111,7 @@
         // debug outputs 
         console.log("Years << " + finaloutput.year); 
         console.log("Months << " + finaloutput.month);
-        console.log("Dates << " + finaloutput.date); // not complete
+        console.log("Dates << " + finaloutput.date);
         console.log("Days << " + finaloutput.day);
         console.log("Times << " + finaloutput.time);
 
@@ -140,6 +141,10 @@
         return timeInMinutes;
     }
 
+    function testfunction() {
+        // create a function to test the handleclick() function
+    }
+
 </script>
 
 <main>
@@ -147,6 +152,7 @@
     <input id="input" type="text" bind:value={inp} placeholder="May 4 2024 to May 4 2025 from 10 AM to 4 PM on Tuesdays">
     <input id="btn" type="button" on:click={handleclick} value="Generate">
     <br>
+    <input type="button" on:click={testfunction} value="Testing">
 
 </main>
 
