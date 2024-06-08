@@ -1,6 +1,8 @@
 <script>
     // @ts-nocheck
     let inp = "";
+
+    let outputs;
     
     const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
     const monthsabbr = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "sept", "oct", "nov", "dec"];
@@ -14,7 +16,40 @@
         day = [];
         year = [];
         time = [];
-        constructor() {
+        constructor() {}
+
+        getter() {
+            let start = "";
+            let end = "";
+            start += this.month[0] + " ";
+            start += this.date[0] + " ";
+            start += this.year[0] + " ";
+            let stime = "";
+            stime += parseInt(this.time[0] / 60);
+            stime += ":";
+            stime += this.time[0] % 60;
+            start += stime;
+            if (this.time[0] % 60 < 10) {
+                stime += "0";
+            }
+            
+            end += this.month[1] + " ";
+            end += this.date[1] + " ";
+            end += this.year[1] + " ";
+            let etime = "";
+            etime += parseInt(this.time[1] / 60);
+            etime += ":";
+            etime += this.time[1] % 60;
+            if (this.time[1] % 60 < 10) {
+                etime += "0";
+            }
+            end += etime;
+
+            console.log("Formatted Times << " + stime + " to " + etime)
+            
+            console.log("Date Strings << [" + start + "], " + "[" + end + "]")
+
+            return [new Date(start), new Date(end), this.day];
         }
     }
 
@@ -54,6 +89,11 @@
             }
             else if (each.length === 4 && parseInt(each) >= new Date().getFullYear()){
                 finaloutput.year = [...finaloutput.year, each];
+            } 
+            else if (months.indexOf(text[i-1]) >= 0 || monthsabbr.indexOf(text[i-1]) >= 0 || months.indexOf(text[i+1]) >= 0 || months.indexOf(text[i+1]) >= 0) {
+                if (parseInt(each) <= 31) {
+                    finaloutput.date = [...finaloutput.date, each];
+                }
             }
         }
 
@@ -66,12 +106,16 @@
         if (parseInt(finaloutput.time[1]) < parseInt(finaloutput.time[0])) {
             finaloutput.year = [finaloutput.time[1], finaloutput.time[0]];
         }
-        
+
         // debug outputs 
-        console.log("Years << " + finaloutput.year); // not complete
+        console.log("Years << " + finaloutput.year); 
         console.log("Months << " + finaloutput.month);
+        console.log("Dates << " + finaloutput.date); // not complete
         console.log("Days << " + finaloutput.day);
         console.log("Times << " + finaloutput.time);
+
+        outputs = finaloutput.getter();
+        console.log("Outputs << " + outputs);
     }
 
     function determineTime(isam, thistime){
