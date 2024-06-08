@@ -89,6 +89,11 @@
             }
             else if (each.length === 4 && parseInt(each) >= new Date().getFullYear()){
                 finaloutput.year = [...finaloutput.year, each];
+            } 
+            else if (months.indexOf(text[i-1]) >= 0 || monthsabbr.indexOf(text[i-1]) >= 0 || months.indexOf(text[i+1]) >= 0 || months.indexOf(text[i+1]) >= 0) {
+                if (parseInt(each) <= 31) {
+                    finaloutput.date = [...finaloutput.date, each];
+                }
             }
         }
 
